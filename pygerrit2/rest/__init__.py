@@ -124,6 +124,14 @@ class GerritRestAPI(object):
         if "data" in local_kwargs and "json" in local_kwargs:
             raise ValueError("Cannot use data and json together")
 
+        if "json" in local_kwargs and \
+                not isinstance(local_kwargs["json"], dict):
+            try:
+                parsed = json.loads(local_kwargs["json"])
+                local_kwargs["json"] = parsed
+            except Exception:
+                raise ValueError("json should be a dict or serialized dict")
+
         if "data" in local_kwargs and isinstance(local_kwargs["data"], dict):
             local_kwargs.update({"json": local_kwargs["data"]})
             del local_kwargs["data"]

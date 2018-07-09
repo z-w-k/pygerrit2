@@ -329,6 +329,24 @@ class TestKwargsTranslation(unittest.TestCase):
         headers = result["headers"]
         assert "Content-Type" not in headers
 
+    def test_json_as_serialized_dict_string_is_transformed_to_dict(self):
+        """Test that `json` is transformed to a dict when passed as a string."""
+        api = GerritRestAPI(url="http://review.example.com")
+        kwargs = {'json': '{"a": "a"}'}
+        result = api.translate_kwargs(**kwargs)
+        assert "json" in result
+        assert isinstance(result["json"], dict)
+        assert result["json"] == {"a": "a"}
+
+    def test_json_as_invalid_json_string_is_rejected(self):
+        """Test that an invalid json string is rejected."""
+        api = GerritRestAPI(url="http://review.example.com")
+        kwargs = {'json': 'abcd'}
+        with self.assertRaises(ValueError) as exc:
+            api.translate_kwargs(**kwargs)
+        assert re.search(r'json should be a dict or serialized dict',
+                         str(exc.exception))
+
 
 if __name__ == '__main__':
     unittest.main()
