@@ -20,7 +20,7 @@ Pygerrit2 is tested on the following platforms and Python versions:
 Platform | Python version(s)
 -------- | -----------------
 OSX | 3.7
-Ubuntu (trusty) | 3.5, 3.6
+Ubuntu (trusty) | 3.5, 3.6, pypy
 Ubuntu (xenial) | 3.7
 
 Support for Python 2.x is no longer guaranteed.
